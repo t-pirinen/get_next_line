@@ -29,7 +29,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	ptr = malloc(nmemb * size);
 	if (ptr == NULL)
 		return (NULL);
-	ft_bzero(ptr, nmemb * size);
+	ft_memset(ptr, 0, nmemb * size);
 	return (ptr);
 }
 
@@ -64,12 +64,6 @@ char	*ft_strchr(const char *s, int c)
 	if (c == '\0')
 		return ((char *)s);
 	return (NULL);
-}
-
-/*	Initializes 'n' amount of memory from 's' to null.						*/
-void	ft_bzero(void *s, size_t n)
-{
-	ft_memset(s, '\0', n);
 }
 
 /*	Fills the first n bytes of the memory area pointed to by s with the
