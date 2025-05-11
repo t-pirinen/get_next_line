@@ -6,10 +6,15 @@
 
 int	main()
 {
-	int	fd = open("test.txt", O_RDONLY);
-	char	*print;
+	int		fd;
+	char	buf[256];
+	int		chars_read;
 
-	while ((print = get_next_line(fd)))
-		printf("\n%s", print);
+	fd = open("test.txt", O_RDONLY);
+	while ((chars_read = read(fd, buf, 6)))
+	{
+		buf[chars_read] = '\0';
+		printf("\n%s", buf);
+	}
 	printf("\n");
 }

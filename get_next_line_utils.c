@@ -6,32 +6,11 @@
 /*   By: tpirinen <tpirinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:36:56 by tpirinen          #+#    #+#             */
-/*   Updated: 2025/05/06 18:20:57 by tpirinen         ###   ########.fr       */
+/*   Updated: 2025/05/11 15:34:39 by tpirinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-/*	Allocates memory for 'nmemb' * 'size' and initializes memory to null.	*/
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*ptr;
-
-	if (nmemb <= 0 || size <= 0)
-	{
-		ptr = malloc(1);
-		if (ptr == NULL)
-			return (NULL);
-		return (ptr);
-	}
-	if (size > (size_t)-1 / nmemb)
-		return (NULL);
-	ptr = malloc(nmemb * size);
-	if (ptr == NULL)
-		return (NULL);
-	ft_memset(ptr, 0, nmemb * size);
-	return (ptr);
-}
 
 /*	Allocates memory (using malloc(3)) and returns a new string, which is
 	the result of concatenating ’s1’ and ’s2’.								*/
@@ -58,6 +37,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	string 's'.																*/
 char	*ft_strchr(const char *s, int c)
 {
+	if (!s)
+		return (NULL);
 	while (*s)
 	{
 		if (*s == (char)c)
@@ -67,20 +48,6 @@ char	*ft_strchr(const char *s, int c)
 	if (c == '\0')
 		return ((char *)s);
 	return (NULL);
-}
-
-/*	Fills the first n bytes of the memory area pointed to by s with the
-	constant byte c.														*/
-void	*ft_memset(void *s, int c, size_t n)
-{
-	unsigned char	*p;
-
-	p = (unsigned char *)s;
-	while (n--)
-	{
-		*p++ = (unsigned char)c;
-	}
-	return (s);
 }
 
 /*	Calculates  the  length of the string pointed to by 's', excluding the
@@ -94,4 +61,29 @@ size_t	ft_strlen(const char *s)
 		len++;
 	return (len);
 }
-	
+
+/*	Allocates memory for 'nmemb' * 'size' and initializes memory to null.	*/
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void			*ptr;
+	size_t			total_size;
+	size_t			i;
+	unsigned char	*iter;
+
+	if (nmemb == 0 || size == 0)
+		return (malloc(1));
+	if (size > (size_t)-1 / nmemb)
+		return (NULL);
+	total_size = nmemb * size;
+	ptr = malloc(total_size);
+	if (!ptr)
+		return (NULL);
+	iter = (unsigned char *)ptr;
+	i = 0;
+	while (i < total_size)
+	{
+		iter[i] = '\0';
+		i++;
+	}
+	return (ptr);
+}
