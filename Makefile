@@ -3,26 +3,25 @@
 
 
 
+NAME = get_next_line.a
+
+C = cc -Wall -Wextra -Werror -g -D BUFFER_SIZE=10
+
+SRC = get_next_line.c get_next_line_utils.c test.c
+
+OBJ = $(SRC:.c=.o)
 
 
-C = cc -Wall -Wextra -Werror -D BUFFER_SIZE=n
-
-SRC = get_next_line.c get_next_line_utils.c maintest.c
-
-OBJ = $(SRC.c=.o)
-
-.c.o:
-	cc -Wall -Wextra -Werror -c $< -o $@
 
 all:
 		@$(C) $(SRC)
-		@./a.out
-		@rm -rf a.out
+		@./a.out test.txt
 
 clean:
 		rm -rf a.out
 
 fclean: clean
-		
+		rm -rf *.a
+		rm -rf *.o
 
 .PHONY: all test clean fclean

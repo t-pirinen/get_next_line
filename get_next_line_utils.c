@@ -6,11 +6,23 @@
 /*   By: tpirinen <tpirinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:36:56 by tpirinen          #+#    #+#             */
-/*   Updated: 2025/05/11 16:43:17 by tpirinen         ###   ########.fr       */
+/*   Updated: 2025/06/01 22:05:36 by tpirinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+/*	Calculates  the  length of the string pointed to by 's', excluding the
+	terminating null byte ('\0').											*/
+size_t	ft_strlen(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
+}
 
 /*	Allocates memory (using malloc(3)) and returns a new string, which is
 	the result of concatenating ’s1’ and ’s2’.								*/
@@ -50,18 +62,6 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-/*	Calculates  the  length of the string pointed to by 's', excluding the
-	terminating null byte ('\0').											*/
-size_t	ft_strlen(const char *s)
-{
-	size_t	len;
-
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
-}
-
 /*	Allocates memory for 'nmemb' * 'size' and initializes memory to null.	*/
 void	*ft_calloc(size_t nmemb, size_t size)
 {
@@ -72,7 +72,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 	if (nmemb == 0 || size == 0)
 		return (malloc(1));
-	if (size > (size_t)-1 / nmemb)
+	if (size > SIZE_MAX / nmemb)
 		return (NULL);
 	total_size = nmemb * size;
 	ptr = malloc(total_size);
