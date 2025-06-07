@@ -6,7 +6,7 @@
 /*   By: tpirinen <tpirinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:36:36 by tpirinen          #+#    #+#             */
-/*   Updated: 2025/06/07 21:27:55 by tpirinen         ###   ########.fr       */
+/*   Updated: 2025/06/07 21:56:45 by tpirinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ static char	*extract_line(const char *buffer)
 
 	len = 0;
 	i = 0;
-	if (!buffer || !*buffer)
-		return (NULL);
 	while (buffer[len] && buffer[len] != '\n')
 		len++;
 	if (buffer[len] == '\n')
