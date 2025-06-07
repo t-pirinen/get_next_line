@@ -6,109 +6,91 @@
 /*   By: tpirinen <tpirinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:36:36 by tpirinen          #+#    #+#             */
-/*   Updated: 2025/06/01 22:05:34 by tpirinen         ###   ########.fr       */
+/*   Updated: 2025/06/07 21:27:55 by tpirinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*get_line(int fd, char *stat_buffer, char *line);
-static char	*clean_line(char **stat_buffer);
-static char	*get_left_overs(char **stat_buffer);
+static char	*read_until_newline(int fd, char *buffer);
+static char	*extract_line(const char *buffer);
 
 char	*get_next_line(int fd)
 {
-	static char		*stat_buffer;
-	char			*line;
-	char			*buffer;
+	static char	left_overs[BUFFER_SIZE + 1];
+	char		*buffer;
+	char		*line;
+	const char	*newline;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= 1024)
 		return (NULL);
-	buffer = malloc(BUFFER_SIZE + 1);
+	buffer = ft_strjoin("", left_overs);
 	if (!buffer)
 		return (NULL);
-	stat_buffer = get_line(fd, stat_buffer, buffer);
+	buffer = read_until_newline(fd, buffer);
+	if (!buffer || !*buffer)
+	{
+		free(buffer);
+		return (NULL);
+	}
+	line = extract_line(buffer);
+	newline = ft_strchr(buffer, '\n');
+	if (newline)
+		ft_strlcpy(left_overs, newline + 1, BUFFER_SIZE + 1);
+	else
+		left_overs[0] = '\0';
 	free(buffer);
-	if (!stat_buffer || !*stat_buffer)
-		return (NULL);
-	line = clean_line(&stat_buffer);
-	buffer = get_left_overs(&stat_buffer);
-	if (!stat_buffer || !line)
-		return (NULL);
-	free(stat_buffer);
-	stat_buffer = buffer;
 	return (line);
 }
 
-static char	*get_line(int fd, char *stat_buffer, char *buffer)
+static char	*read_until_newline(int fd, char *buffer)
 {
-	ssize_t		bytes_read;
-	char		*temp;
+	char	read_buf[BUFFER_SIZE + 1];
+	char	*tmp;
+	ssize_t	bytes_read;
 
-	bytes_read = 1;
-	while (bytes_read > 0 && !(ft_strchr(stat_buffer, '\n')))
+	while (!ft_strchr(buffer, '\n'))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		bytes_read = read(fd, read_buf, BUFFER_SIZE);
 		if (bytes_read == -1)
 		{
+			free(buffer);
 			return (NULL);
 		}
 		if (bytes_read == 0)
 			break ;
-		buffer[bytes_read] = '\0';
-		if (!stat_buffer)
-			stat_buffer = ft_strjoin("", "");
-		temp = stat_buffer;
-		stat_buffer = ft_strjoin(temp, buffer);
-		free(temp);
-		if (!stat_buffer)
+		read_buf[bytes_read] = '\0';
+		tmp = buffer;
+		buffer = ft_strjoin(buffer, read_buf);
+		free(tmp);
+		if (!buffer)
 			return (NULL);
 	}
-	return (stat_buffer);
+	return (buffer);
 }
 
-static char	*clean_line(char **stat_buffer)
+static char	*extract_line(const char *buffer)
 {
-	char	*new_line;
+	char	*line;
 	size_t	len;
 	size_t	i;
 
 	len = 0;
-	while ((*stat_buffer)[len] && (*stat_buffer)[len] != '\n')
-		len++;
-	if ((*stat_buffer)[len] == '\n')
-		len++;
-	new_line = malloc(len + 1);
-	if (!new_line)
-	{
-		free(*stat_buffer);
-		*stat_buffer = NULL;
-		return (NULL);
-	}
 	i = 0;
+	if (!buffer || !*buffer)
+		return (NULL);
+	while (buffer[len] && buffer[len] != '\n')
+		len++;
+	if (buffer[len] == '\n')
+		len++;
+	line = malloc(len + 1);
+	if (!line)
+		return (NULL);
 	while (i < len)
 	{
-		new_line[i] = (*stat_buffer)[i];
+		line[i] = buffer[i];
 		i++;
 	}
-	new_line[len] = '\0';
-	return (new_line);
-}
-
-static char	*get_left_overs(char **stat_buffer)
-{
-	char	*left_overs;
-	char	*newline;
-	
-	newline = ft_strchr(*stat_buffer, '\n');
-	if (!newline)
-		return (NULL);
-	left_overs = ft_strjoin("", (newline + 1));
-	if (!left_overs)
-	{
-		free(*stat_buffer);
-		*stat_buffer = NULL;
-		return (NULL);
-	}
-	return (left_overs);
+	line[len] = '\0';
+	return (line);
 }

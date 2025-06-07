@@ -6,7 +6,7 @@
 /*   By: tpirinen <tpirinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:36:56 by tpirinen          #+#    #+#             */
-/*   Updated: 2025/06/01 22:05:36 by tpirinen         ###   ########.fr       */
+/*   Updated: 2025/06/07 20:41:36 by tpirinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,28 +62,20 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-/*	Allocates memory for 'nmemb' * 'size' and initializes memory to null.	*/
-void	*ft_calloc(size_t nmemb, size_t size)
+/*	Copies up to size - 1 characters from the NUL-terminated string 'src'
+	to 'dst', NUL-terminating the result.									*/
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	void			*ptr;
-	size_t			total_size;
-	size_t			i;
-	unsigned char	*iter;
+	size_t	length;
 
-	if (nmemb == 0 || size == 0)
-		return (malloc(1));
-	if (size > SIZE_MAX / nmemb)
-		return (NULL);
-	total_size = nmemb * size;
-	ptr = malloc(total_size);
-	if (!ptr)
-		return (NULL);
-	iter = (unsigned char *)ptr;
-	i = 0;
-	while (i < total_size)
+	length = 0;
+	while (src[length])
 	{
-		iter[i] = '\0';
-		i++;
+		if (length + 1 < size)
+			*dst++ = src[length];
+		length++;
 	}
-	return (ptr);
+	if (size > 0)
+		*dst = '\0';
+	return (length);
 }
