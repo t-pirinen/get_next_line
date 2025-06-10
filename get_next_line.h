@@ -6,7 +6,7 @@
 /*   By: tpirinen <tpirinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:36:44 by tpirinen          #+#    #+#             */
-/*   Updated: 2025/06/07 22:23:26 by tpirinen         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:29:15 by tpirinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# define BUFFER_SIZE 37
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 37
+# endif
 
 char	*get_next_line(int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
