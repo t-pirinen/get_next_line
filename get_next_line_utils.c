@@ -6,7 +6,7 @@
 /*   By: tpirinen <tpirinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:36:56 by tpirinen          #+#    #+#             */
-/*   Updated: 2025/06/07 21:53:26 by tpirinen         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:53:11 by tpirinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,17 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-/*	Copies up to size - 1 characters from the NUL-terminated string 'src'
-	to 'dst', NUL-terminating the result.									*/
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+/*	Copies from the NUL-terminated string 'src' to 'dst', NUL-terminating
+	the result.																*/
+void	ft_strcpy(char *dst, const char *src)
 {
-	size_t	length;
+	size_t	i;
 
-	length = 0;
-	while (src[length])
+	i = 0;
+	while (src[i])
 	{
-		if (length + 1 < size)
-			*dst++ = src[length];
-		length++;
+		dst[i] = src[i];
+		i++;
 	}
-	if (size > 0)
-		*dst = '\0';
-	return (length);
+	dst[i] = '\0';
 }

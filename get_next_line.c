@@ -6,14 +6,14 @@
 /*   By: tpirinen <tpirinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:36:36 by tpirinen          #+#    #+#             */
-/*   Updated: 2025/06/07 22:38:18 by tpirinen         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:15:33 by tpirinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 static char	*read_until_newline(int fd, char *buffer);
-static char	*extract_line(const char *buffer);
+static char	*clean_line(const char *buffer);
 
 char	*get_next_line(int fd)
 {
@@ -24,7 +24,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= 1024)
 		return (NULL);
-	buffer = ft_strjoin("", left_overs);
+	buffer = ft_strjoin(left_overs, "");
 	if (!buffer)
 		return (NULL);
 	buffer = read_until_newline(fd, buffer);
@@ -33,10 +33,10 @@ char	*get_next_line(int fd)
 		free(buffer);
 		return (NULL);
 	}
-	line = extract_line(buffer);
+	line = clean_line(buffer);
 	newline = ft_strchr(buffer, '\n');
 	if (newline)
-		ft_strlcpy(left_overs, newline + 1, BUFFER_SIZE + 1);
+		ft_strcpy(left_overs, newline + 1);
 	else
 		left_overs[0] = '\0';
 	free(buffer);
@@ -46,7 +46,7 @@ char	*get_next_line(int fd)
 static char	*read_until_newline(int fd, char *buffer)
 {
 	char	read_buf[BUFFER_SIZE + 1];
-	char	*tmp;
+	char	*temp;
 	ssize_t	bytes_read;
 
 	while (!ft_strchr(buffer, '\n'))
@@ -60,16 +60,16 @@ static char	*read_until_newline(int fd, char *buffer)
 		if (bytes_read == 0)
 			break ;
 		read_buf[bytes_read] = '\0';
-		tmp = buffer;
+		temp = buffer;
 		buffer = ft_strjoin(buffer, read_buf);
-		free(tmp);
+		free(temp);
 		if (!buffer)
 			return (NULL);
 	}
 	return (buffer);
 }
 
-static char	*extract_line(const char *buffer)
+static char	*clean_line(const char *buffer)
 {
 	char	*line;
 	size_t	len;
