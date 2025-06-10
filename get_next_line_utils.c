@@ -6,7 +6,7 @@
 /*   By: tpirinen <tpirinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:36:56 by tpirinen          #+#    #+#             */
-/*   Updated: 2025/06/10 20:53:11 by tpirinen         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:52:20 by tpirinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 }
 
 /*	Returns a pointer to the first occurrence of the character 'c' in the
-	string 's'.																*/
+	string 's'.	Returns NULL if character isn't found.						*/
 char	*ft_strchr(const char *s, int c)
 {
 	if (!s)
